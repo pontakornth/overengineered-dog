@@ -2,12 +2,14 @@
 
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Json_decode from "@glennsl/bs-json/src/Json_decode.bs.js";
+import * as DogImage$FunctionalVite from "./components/DogImage.bs.js";
 import * as ReasonReactErrorBoundary from "reason-react/src/ReasonReactErrorBoundary.bs.js";
 
 function dogResponse(data) {
   return {
-          messages: Json_decode.field("messages", (function (param) {
+          message: Json_decode.field("message", (function (param) {
                   return Json_decode.array(Json_decode.string, param);
                 }), data),
           status: Json_decode.field("status", Json_decode.string, data)
@@ -36,6 +38,7 @@ function App(Props) {
         dogsData: []
       });
   var dispatch = match[1];
+  var state = match[0];
   React.useEffect((function () {
           fetch("https://dog.ceo/api/breeds/image/random/15").then(function (prim) {
                   return prim.json();
@@ -43,7 +46,7 @@ function App(Props) {
                 var dogsData = dogResponse(json);
                 Curry._1(dispatch, {
                       TAG: /* SetDogsData */0,
-                      _0: dogsData.messages
+                      _0: dogsData.message
                     });
                 return Promise.resolve(dogsData);
               });
@@ -51,7 +54,7 @@ function App(Props) {
         }), []);
   return React.createElement(ReasonReactErrorBoundary.make, {
               children: React.createElement("div", undefined, React.createElement("h1", undefined, "This is a counter"), React.createElement("input", {
-                        value: match[0].searchTerm,
+                        value: state.searchTerm,
                         onChange: (function ($$event) {
                             var value = $$event.target.value;
                             return Curry._1(dispatch, {
@@ -59,7 +62,12 @@ function App(Props) {
                                         _0: value
                                       });
                           })
-                      })),
+                      }), Belt_Array.map(state.dogsData, (function (imageUrl) {
+                          return React.createElement(DogImage$FunctionalVite.make, {
+                                      imageUrl: imageUrl,
+                                      key: imageUrl
+                                    });
+                        }))),
               fallback: (function (param) {
                   return "Something went wrong";
                 })

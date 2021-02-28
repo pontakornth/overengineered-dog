@@ -1,7 +1,7 @@
-type dogResponse = {messages: array(string), status: string};
+type dogResponse = {message: array(string), status: string};
 module Decode {
   let dogResponse = (data: Js.Json.t) =>
-      Json.Decode.{messages: field("messages", array(string), data), status: field("status", string, data)};
+      Json.Decode.{message: field("message", array(string), data), status: field("status", string, data)};
 };
 
 type action = 
@@ -24,7 +24,7 @@ let make = () => {
          |> Js.Promise.then_(Fetch.Response.json)
          |> Js.Promise.then_(json => {
              let dogsData = Decode.dogResponse(json);
-             dispatch(SetDogsData(dogsData.messages));
+             dispatch(SetDogsData(dogsData.message));
              resolve(dogsData);
             })
          |> ignore
@@ -39,6 +39,10 @@ let make = () => {
           let value = ReactEvent.Form.target(event)##value;
           dispatch(SetSearchTerm(value))
         } } />
+        {Belt.Array.map(state.dogsData, imageUrl => {
+          <DogImage imageUrl={imageUrl} key={imageUrl} />
+        }
+           ) -> React.array}
       </div>
     </ReasonReactErrorBoundary>;
 }
