@@ -2,8 +2,21 @@
 
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
-import * as Counter$FunctionalVite from "./components/Counter.bs.js";
+import * as Json_decode from "@glennsl/bs-json/src/Json_decode.bs.js";
 import * as ReasonReactErrorBoundary from "reason-react/src/ReasonReactErrorBoundary.bs.js";
+
+function dogResponse(data) {
+  return {
+          messages: Json_decode.field("messages", (function (param) {
+                  return Json_decode.array(Json_decode.string, param);
+                }), data),
+          status: Json_decode.field("status", Json_decode.string, data)
+        };
+}
+
+var Decode = {
+  dogResponse: dogResponse
+};
 
 function App(Props) {
   var match = React.useReducer((function (state, action) {
@@ -23,6 +36,19 @@ function App(Props) {
         dogsData: []
       });
   var dispatch = match[1];
+  React.useEffect((function () {
+          fetch("https://dog.ceo/api/breeds/image/random/15").then(function (prim) {
+                  return prim.json();
+                }).then(function (json) {
+                var dogsData = dogResponse(json);
+                Curry._1(dispatch, {
+                      TAG: /* SetDogsData */0,
+                      _0: dogsData.messages
+                    });
+                return Promise.resolve(dogsData);
+              });
+          
+        }), []);
   return React.createElement(ReasonReactErrorBoundary.make, {
               children: React.createElement("div", undefined, React.createElement("h1", undefined, "This is a counter"), React.createElement("input", {
                         value: match[0].searchTerm,
@@ -33,7 +59,7 @@ function App(Props) {
                                         _0: value
                                       });
                           })
-                      }), React.createElement(Counter$FunctionalVite.make, {})),
+                      })),
               fallback: (function (param) {
                   return "Something went wrong";
                 })
@@ -43,6 +69,7 @@ function App(Props) {
 var make = App;
 
 export {
+  Decode ,
   make ,
   
 }
