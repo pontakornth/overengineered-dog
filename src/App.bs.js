@@ -3,9 +3,12 @@
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
+import * as ReactFela from "react-fela";
 import * as Json_decode from "@glennsl/bs-json/src/Json_decode.bs.js";
+import * as Grid$FunctionalVite from "./components/Grid.bs.js";
 import * as DogImage$FunctionalVite from "./components/DogImage.bs.js";
 import * as ReasonReactErrorBoundary from "reason-react/src/ReasonReactErrorBoundary.bs.js";
+import * as AppRenderer$FunctionalVite from "./components/AppRenderer.bs.js";
 
 function dogResponse(data) {
   return {
@@ -52,25 +55,30 @@ function App(Props) {
               });
           
         }), []);
-  return React.createElement(ReasonReactErrorBoundary.make, {
-              children: React.createElement("div", undefined, React.createElement("h1", undefined, "This is a counter"), React.createElement("input", {
-                        value: state.searchTerm,
-                        onChange: (function ($$event) {
-                            var value = $$event.target.value;
-                            return Curry._1(dispatch, {
-                                        TAG: /* SetSearchTerm */1,
-                                        _0: value
-                                      });
-                          })
-                      }), Belt_Array.map(state.dogsData, (function (imageUrl) {
-                          return React.createElement(DogImage$FunctionalVite.make, {
-                                      imageUrl: imageUrl,
-                                      key: imageUrl
-                                    });
-                        }))),
-              fallback: (function (param) {
-                  return "Something went wrong";
-                })
+  return React.createElement(ReactFela.RendererProvider, {
+              renderer: AppRenderer$FunctionalVite.renderer,
+              children: React.createElement(ReasonReactErrorBoundary.make, {
+                    children: React.createElement("div", undefined, React.createElement("h1", undefined, "This is a counter"), React.createElement("input", {
+                              value: state.searchTerm,
+                              onChange: (function ($$event) {
+                                  var value = $$event.target.value;
+                                  return Curry._1(dispatch, {
+                                              TAG: /* SetSearchTerm */1,
+                                              _0: value
+                                            });
+                                })
+                            }), React.createElement(Grid$FunctionalVite.make, {
+                              children: Belt_Array.map(state.dogsData, (function (imageUrl) {
+                                      return React.createElement(DogImage$FunctionalVite.make, {
+                                                  imageUrl: imageUrl,
+                                                  key: imageUrl
+                                                });
+                                    }))
+                            })),
+                    fallback: (function (param) {
+                        return "Something went wrong";
+                      })
+                  })
             });
 }
 

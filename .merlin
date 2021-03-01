@@ -11,6 +11,8 @@ S /Users/pontakornth/Programming/functional-vite/node_modules/bs-fetch/lib/ocaml
 B /Users/pontakornth/Programming/functional-vite/node_modules/bs-fetch/lib/ocaml
 S /Users/pontakornth/Programming/functional-vite/node_modules/@glennsl/bs-json/lib/ocaml
 B /Users/pontakornth/Programming/functional-vite/node_modules/@glennsl/bs-json/lib/ocaml
+S /Users/pontakornth/Programming/functional-vite/node_modules/reason-fela/lib/ocaml
+B /Users/pontakornth/Programming/functional-vite/node_modules/reason-fela/lib/ocaml
 S src
 B lib/bs/src
 S src/components

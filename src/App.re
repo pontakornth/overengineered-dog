@@ -1,3 +1,5 @@
+open ReactFela;
+open AppRenderer;
 type dogResponse = {message: array(string), status: string};
 module Decode {
   let dogResponse = (data: Js.Json.t) =>
@@ -32,6 +34,7 @@ let make = () => {
       None;
     }
     );
+    <RendererProvider renderer>
     <ReasonReactErrorBoundary fallback={_ => "Something went wrong"->React.string}>
       <div> 
         <h1>{React.string("This is a counter")} </h1>
@@ -39,10 +42,13 @@ let make = () => {
           let value = ReactEvent.Form.target(event)##value;
           dispatch(SetSearchTerm(value))
         } } />
+        <Grid>
         {Belt.Array.map(state.dogsData, imageUrl => {
           <DogImage imageUrl={imageUrl} key={imageUrl} />
         }
            ) -> React.array}
+        </Grid>
       </div>
-    </ReasonReactErrorBoundary>;
-}
+    </ReasonReactErrorBoundary>
+    </RendererProvider>
+};
