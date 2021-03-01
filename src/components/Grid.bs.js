@@ -11,6 +11,8 @@ function Grid(Props) {
               className: Curry._1(css, {
                     display: "grid",
                     "grid-template-columns": "repeat(3, 1fr)",
+                    "grid-template-rows": "masonry",
+                    gap: "10px",
                     margin: "auto",
                     width: "80%",
                     "max-width": "1280px"
